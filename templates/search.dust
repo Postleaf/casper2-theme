@@ -1,0 +1,50 @@
+{>"default"/}
+{! The tag above means - insert everything in this file into the {body} of the default.hbs template !}
+
+{<body}
+    {! The big featured header, it uses blog cover image as a BG if available !}
+    <header class="site-header outer {?Settings.cover}" style="background-image: url({@url path=Settings.cover/}){:else}no-cover{/Settings.cover}">
+        <div class="inner">
+            {>"partials/site-nav"/}
+            <div class="site-header-content">
+                <h1 class="site-title">
+                    {^query}
+                        Search
+                    {:else}
+                        Search Results
+                    {/query}
+                </h1>
+                <h2 class="site-description">
+                    {^query}
+                        What are you looking for?
+                    {:else}
+                        {@plural count=pagination.totalItems none="No posts found, but here are some others you might like." one="% post found" many="% posts found"/}
+                    {/query}
+                </h2>
+                <form class="search-form" action="{@url type="search"/}" method="GET">
+                    <input type="search" name="s" value="{query}" placeholder="Search" autofocus>
+                    <button type="submit">Find Posts</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    {! The main content area !}
+    <main id="site-main" class="site-main outer" role="main">
+        <div class="inner">
+            <div class="post-feed">
+                {#posts}
+                    {! The tag below includes the markup for each post - partials/post-card.hbs !}
+                    {>"partials/post-card"/}
+                {:else}
+                    {! No matching posts so show recent ones instead !}
+                    {@getPosts count="10" offset="0" sortBy="name" sortOrder="desc"}
+                        {#posts}
+                            {>"partials/post-card"/}
+                        {/posts}
+                    {/getPosts}
+                {/posts}
+            </div>
+        </div>
+    </main>
+{/body}

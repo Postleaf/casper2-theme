@@ -1,0 +1,40 @@
+{>"default"/}
+{! The tag above means: insert everything in this file
+into the {body} of the default.hbs template !}
+
+{<body}
+    {! The big featured header, it uses blog cover image as a BG if available !}
+    <header class="site-header outer">
+        <div class="inner">
+            {>"partials/site-nav"/}
+        </div>
+    </header>
+
+    {! Everything inside the #post tags pulls data from the post !}
+    {#post}
+
+    <main id="site-main" class="site-main outer" role="main">
+        <div class="inner">
+
+            <article class="post-full {@postClass/} {^image}no-image{/image}">
+
+                <header class="post-full-header">
+                    <h1 class="post-full-title">{@title editable="true"/}</h1>
+                </header>
+
+                {?image}
+                <figure class="post-full-image" style="background-image: url({@url path=image/})">
+                </figure>
+                {/image}
+
+                <section class="post-full-content">
+                    {@content editable="true"/}
+                </section>
+
+            </article>
+
+        </div>
+    </main>
+
+    {/post}
+{/body}

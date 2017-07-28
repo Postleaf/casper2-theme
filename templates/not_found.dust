@@ -1,0 +1,58 @@
+{!
+This error template is used for all 400/500 errors which might occur on your site. It's a good idea to keep this template as minimal as possible in terms of both file size and complexity. You'll notice that we *don't* use any JavsScript, or ghost_head / ghost_foot in this file.
+!}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>{meta.title}</title>
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="{@url type="theme" path="assets/css/screen.css"/}" />
+</head>
+<body class="error-template">
+    <div class="site-wrapper">
+
+        <header class="site-header outer {?Settings.cover}" style="background-image: url({@url path=Settings.cover/}){:else}no-cover{/Settings.cover}">
+            <div class="inner">
+                <nav class="site-nav-center">
+                    {?Settings.logo}
+                        <a class="site-nav-logo" href="{@url/}"><img src="{@url path=Settings.logo/}" alt="{Settings.title}" /></a>
+                    {:else}
+                        <a class="site-nav-logo" href="{@url/}">{Settings.title}</a>
+                    {/Settings.logo}
+                </nav>
+            </div>
+        </header>
+
+        <main id="site-main" class="site-main outer" role="main">
+            <div class="inner">
+
+                <section class="error-message">
+                    <h1 class="error-code">{title}</h1>
+                    <p class="error-description">{message}</p>
+                    <a class="error-link" href="{@url/}">Go to the front page →</a>
+                </section>
+
+            </div>
+        </main>
+
+        {@getPosts count="3"}
+            {?posts}
+            <aside class="outer">
+                <div class="inner">
+                    <div class="post-feed">
+                        {#posts}
+                            {>"partials/post-card" noAuthor="true"/}
+                        {/posts}
+                    </div>
+                </div>
+            </aside>
+            {/posts}
+        {/getPosts}
+
+    </div>
+</body>
+</html>

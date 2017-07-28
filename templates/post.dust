@@ -1,0 +1,184 @@
+{>"default"/}
+
+{! The tag above means: insert everything in this file
+into the {body} of the default.hbs template !}
+
+{<body}
+    <header class="site-header outer">
+        <div class="inner">
+            {>"partials/site-nav"/}
+        </div>
+    </header>
+
+    {! Everything inside the #post tags pulls data from the post !}
+    {#post}
+
+    <main id="site-main" class="site-main outer" role="main">
+        <div class="inner">
+
+            <article class="post-full {@postClass/} {^image}no-image{/image}">
+
+                <header class="post-full-header">
+                    <section class="post-full-meta">
+                        <time class="post-full-meta-date" datetime="{@date date=publishedAt format="YYYY-MM-DD"/}">{@date date=publishedAt format="D MMMM YYYY"/}</time>
+                        {?tags}
+                            {#tags}
+                                <span class="date-divider">/</span> <a href="{@url type="tag" slug=slug/}">{name}</a>
+                            {/tags}
+                        {/tags}
+                    </section>
+                    <h1 class="post-full-title">{@title editable="true"/}</h1>
+                </header>
+
+                {?image}
+                <figure class="post-full-image" style="background-image: url({@url path=image/})">
+                </figure>
+                {/image}
+
+                <section class="post-full-content">
+                    {@content editable="true"/}
+                </section>
+
+                <footer class="post-full-footer">
+                    {! Everything inside the #author tags pulls data from the author !}
+                    {#author}
+
+                    <section class="author-card">
+                        {?avatar}
+                            <img class="author-profile-image" src="{@dynamicImage src=avatar width="200"/}" alt="{name}" />
+                        {/avatar}
+                        <section class="author-card-content">
+                            <h4 class="author-card-name"><a href="{@url type="author" username=username/}">{name}</a></h4>
+                            {?bio}
+                                {bio|markdownToHtml|s}
+                            {:else}
+                                <p>Read <a href="{@url type="author" username=username/}">more posts</a> by this author.</p>
+                            {/bio}
+                        </section>
+                    </section>
+                    <div class="post-full-footer-right">
+                        <a class="author-card-button" href="{@url type="author" username=username/}">Read More</a>
+                    </div>
+
+                    {/author}
+                </footer>
+
+            </article>
+
+        </div>
+    </main>
+
+    {! Links to Previous/Next posts !}
+    <aside class="read-next outer">
+        <div class="inner">
+            <div class="read-next-feed">
+
+                {@getRelatedPosts count="3"}
+                    <article class="read-next-card"
+                        {?Settings.cover}
+                            style="background-image: url({@url path=Settings.cover/})"
+                        {/Settings.cover}
+                    >
+                        <header class="read-next-card-header">
+                            <small class="read-next-card-header-sitetitle">&mdash; {Settings.title} &mdash;</small>
+                            <h3 class="read-next-card-header-title">Suggested Posts</h3>
+                        </header>
+                        <div class="read-next-divider">{>"partials/icons/infinity"/}</div>
+                        <div class="read-next-card-content">
+                            <ul>
+                                {#posts}
+                                <li><a href="{@url type="post" slug=slug/}">{title}</a></li>
+                                {/posts}
+                            </ul>
+                        </div>
+                        <footer class="read-next-card-footer">
+                            <a href="{@url type="blog"/}">See all posts →</a>
+                        </footer>
+                    </article>
+                {/getRelatedPosts}
+
+                {! If there's a next post, display it using the same markup included from - partials/post-card.hbs !}
+                {@getNextPost}
+                    {#post}
+                        {>"partials/post-card"/}
+                    {/post}
+                {/getNextPost}
+
+                {! If there's a previous post, display it using the same markup included from - partials/post-card.hbs !}
+                {@getNextPost previous="true"}
+                    {#post}
+                        {>"partials/post-card"/}
+                    {/post}
+                {/getNextPost}
+
+            </div>
+        </div>
+    </aside>
+
+    {! Floating header which appears on-scroll, included from includes/floating-header.hbs !}
+    {>"partials/floating-header"/}
+
+    {/post}
+{/body}
+
+{! The scripts block here will send everything inside it up to the matching {+script/} block found in default.hbs !}
+{<scripts}
+<script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    var progressBar = document.querySelector('progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+});
+</script>
+{/scripts}

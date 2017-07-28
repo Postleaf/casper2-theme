@@ -1,0 +1,21 @@
+<nav class="site-nav">
+    <div class="site-nav-left">
+        {^Request.isHomepage}
+            {?Settings.logo}
+                <a class="site-nav-logo" href="{@url/}"><img src="{@url path=Settings.logo/}" alt="{Settings.title}" /></a>
+            {:else}
+                <a class="site-nav-logo" href="{@url/}">{Settings.title}</a>
+            {/Settings.logo}
+        {/Request.isHomepage}
+
+        <ul class="nav">
+            {@navigation}
+                <li class="nav-{slug} {?isCurrent} nav-current{/isCurrent}"><a href="{@url path=link/}">{label}</a></li>
+            {/navigation}
+        </ul>
+    </div>
+    <div class="site-nav-right">
+        <a class="search-button" href="{@url type="search"/}">{>"partials/icons/search.dust"/}</a>
+        <a class="rss-button" href="{@url type="rss"/}" target="_blank">{>"partials/icons/rss.dust"/}</a>
+    </div>
+</nav>

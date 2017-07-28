@@ -1,0 +1,38 @@
+{>"default"/}
+{! The tag above means: insert everything in this file
+into the {body} of the default.hbs template !}
+
+{<body}
+    {! The big featured header, it uses blog cover image as a BG if available !}
+    <header class="site-header outer {?Settings.cover}" style="background-image: url({@url path=Settings.cover/}){:else}no-cover{/Settings.cover}">
+        <div class="inner">
+            <div class="site-header-content">
+                <h1 class="site-title">
+                    {?Settings.logo}
+                        <img class="site-logo" src="{@url path=Settings.logo/}" alt="{Settings.title}" />
+                    {:else}
+                        {Settings.title}
+                    {/Settings.logo}
+                </h1>
+                <h2 class="site-description">{Settings.tagline}</h2>
+            </div>
+            {>"partials/site-nav"/}
+        </div>
+    </header>
+
+    {! The main content area !}
+    <main id="site-main" class="site-main outer" role="main">
+        <div class="inner">
+
+            <div class="post-feed">
+                {#posts}
+
+                    {! The tag below includes the markup for each post - partials/post-card.hbs !}
+                    {>"partials/post-card"/}
+
+                {/posts}
+            </div>
+
+        </div>
+    </main>
+{/body}

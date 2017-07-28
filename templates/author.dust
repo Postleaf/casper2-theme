@@ -1,0 +1,50 @@
+{>"default"/}
+{! The tag above means - insert everything in this file into the {body} of the default.hbs template !}
+
+{<body}
+    {#author}
+    {! Everything inside the #author tags pulls data from the author !}
+    <header class="site-header outer {?image}" style="background-image: url({@url path=image/}){:else}no-cover{/image}">
+        <div class="inner">
+            {>"partials/site-nav"/}
+            <div class="site-header-content">
+                {?avatar}
+                    <img class="author-profile-image" src="{@dynamicImage src=avatar thumbnail="200"/}" alt="{name}" />
+                {/avatar}
+                <h1 class="site-title">{name}</h1>
+                {?bio}
+                    <h2 class="author-bio">{bio|markdownToHtml|s}</h2>
+                {/bio}
+                <div class="author-meta">
+                    {?location}
+                        <div class="author-location">{location} <span class="bull">&bull;</span></div>
+                    {/location}
+                    <div class="author-stats">
+                        {@plural count=pagination.totalItems none="No posts" one="% post" many="% posts"/}
+                    </div>
+                    {?website}
+                        <a class="social-link social-link-wb" href="{website}" target="_blank">{>"partials/icons/website.dust"/}</a>
+                    {/website}
+                    <a class="social-link social-link-rss" href="{@url type="rss"/}" target="_blank">{>"partials/icons/rss.dust"/}</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    {/author}
+
+    {! The main content area !}
+    <main id="site-main" class="site-main outer" role="main">
+        <div class="inner">
+
+            <div class="post-feed">
+                {#posts}
+
+                    {! The tag below includes the markup for each post - partials/post-card.hbs !}
+                    {>"partials/post-card"/}
+
+                {/posts}
+            </div>
+
+        </div>
+    </main>
+{/body}

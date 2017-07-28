@@ -1,0 +1,13 @@
+{
+  "name": "Casper 2.0",
+  "description": "The new default theme for Ghost. Now available for Postleaf.",
+  "version": "2.0.1",
+  "author": "",
+  "organization": "The Ghost Foundation",
+  "license": "MIT",
+  "url": "https://github.com/TryGhost/Casper",
+  "image": "assets/screenshot-desktop.jpg",
+  "customPostTemplates": [
+    { "name": "Page", "filename": "page.dust" }
+  ]
+}

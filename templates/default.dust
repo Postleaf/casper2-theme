@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    {! Document Settings !}
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    {! Base Meta !}
+    <title>{meta.title}</title>
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    {! Styles'n'Scripts !}
+    <link rel="stylesheet" type="text/css" href="{@url type="theme" path="assets/css/global.css"/}" />
+    <link rel="stylesheet" type="text/css" href="{@url type="theme" path="assets/css/screen.css"/}" />
+
+    {! This tag outputes SEO meta+structured data and other important settings !}
+    {@head/}
+
+</head>
+<body class="{@bodyClass/}">
+
+    <div class="site-wrapper">
+
+        {! All the main content gets inserted here, index.hbs, post.hbs, etc !}
+        {+body/}
+
+        {! The footer at the very bottom of the screen !}
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="{@url/}">{Settings.title}</a> &copy; {@date format="YYYY"/}</section>
+                <nav class="site-footer-nav">
+                    <a href="{@url/}">Latest Posts</a>
+                    <a href="https://www.postleaf.org/" target="_blank">Postleaf</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+    {! jQuery !}
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+
+    {@gt key=pagination.totalPages value="1"}
+        <script>
+            var maxPages = parseInt('{pagination.totalPages}');
+        </script>
+        <script src="{@url type="theme" path="assets/js/infinitescroll.js"/}"></script>
+    {/gt}
+
+    {! The script block will pull in data from the {<scripts} blocks in other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. !}
+    {+script/}
+
+    {! Postleaf outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag !}
+    {@foot/}
+
+</body>
+</html>

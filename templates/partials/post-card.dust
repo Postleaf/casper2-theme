@@ -1,0 +1,30 @@
+<article class="post-card {@postClass/}{^image} no-image{/image}">
+    {?image}
+        <a class="post-card-image-link" href="{@url type="post" slug=slug/}">
+            <div class="post-card-image" style="background-image: url({@url path=image/})"></div>
+        </a>
+    {/image}
+    <div class="post-card-content">
+        <a class="post-card-content-link" href="{@url type="post" slug=slug/}">
+            <header class="post-card-header">
+                {?tags}
+                    {@first}
+                        <span class="post-card-tags">{name}</span>
+                    {/first}
+                {/tags}
+                <h2 class="post-card-title">{title}</h2>
+            </header>
+            <section class="post-card-excerpt">
+                <p>{@excerpt paragraphs="1"/}</p>
+            </section>
+        </a>
+        {^noAuthor}
+            <footer class="post-card-meta">
+                {?author.avatar}
+                    <img class="author-profile-image" src="{@url path=author.avatar/}" alt="{author.name}" />
+                {/author.avatar}
+                <a href="{@url type="author" username=author.username/}" class="post-card-author">{author.name}</a>
+            </footer>
+        {/noAuthor}
+    </div>
+</article>
