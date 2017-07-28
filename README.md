@@ -14,7 +14,7 @@ The new default theme for Ghost. Now available for Postleaf.
 
 ## Preview
 
-![Screenshot](http://postleaf.s3.amazonaws.com/website/images/caspers_screenshot.png)
+![Screenshot](http://postleaf.s3.amazonaws.com/website/images/casper2_screenshot.png)
 
 ## Copyright & License
 
